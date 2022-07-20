@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API-BusinessAdminCJS", "API-BusinessAdminCJS\API-BusinessAdminCJS.csproj", "{BCEAE311-2986-4EDF-BAB8-A2205529D187}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCEAE311-2986-4EDF-BAB8-A2205529D187}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCEAE311-2986-4EDF-BAB8-A2205529D187}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCEAE311-2986-4EDF-BAB8-A2205529D187}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCEAE311-2986-4EDF-BAB8-A2205529D187}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {910B4E22-08DE-4864-92E4-C28D6A1AA620}
+	EndGlobalSection
+EndGlobal
