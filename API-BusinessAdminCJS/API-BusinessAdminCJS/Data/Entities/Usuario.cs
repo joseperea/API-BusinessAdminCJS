@@ -43,7 +43,7 @@ namespace API_BusinessAdminCJS.Data.Entities
         [Display(Name = "Documento")]
         [MaxLength(20, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        public DateTime Documento { get; set; }
+        public string Documento { get; set; }
 
         [Display(Name = "Dirección")]
         [MaxLength(200, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]

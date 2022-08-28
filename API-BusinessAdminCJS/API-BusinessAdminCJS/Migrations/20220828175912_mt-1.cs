@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API_BusinessAdminCJS.Migrations
 {
-    public partial class UsurioInicial : Migration
+    public partial class mt1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,7 +34,7 @@ namespace API_BusinessAdminCJS.Migrations
                     SegundoApellido = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Telefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Documento = table.Column<DateTime>(type: "datetime2", maxLength: 20, nullable: false),
+                    Documento = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Direccion = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Estado = table.Column<bool>(type: "bit", nullable: false),
