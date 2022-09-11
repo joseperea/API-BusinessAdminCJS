@@ -13,7 +13,7 @@ namespace API_BusinessAdminCJS.Data.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [StringLength(100,ErrorMessage = "El campo {0} debe tener maximo {1} caracteres", MinimumLength = 4)]
         public string Descripcion { get; set; }
-        public Usuario usuario { get; set; }
         public bool Estado { get; set; }
+
     }
 }

@@ -1,10 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 namespace API_BusinessAdminCJS.Data.Entities
 {
     public class Usuario : IdentityUser
     {
+
+        [ForeignKey(nameof(TipoDocumento))]
+        public int IdTipoDocumento { get; set; }
 
         [Display(Name = "Primer Nombre")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
@@ -66,6 +70,8 @@ namespace API_BusinessAdminCJS.Data.Entities
 
         public bool Estado { get; set; }
 
-        public ICollection<TipoDocumento> TipoDocumentos { get; set; }
+
+        //Relaciones 
+        public TipoDocumento TipoDocumento { get; set; }
     }
 }
