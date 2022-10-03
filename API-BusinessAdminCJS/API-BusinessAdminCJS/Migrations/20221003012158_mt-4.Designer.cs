@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_BusinessAdminCJS.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220911140043_mt-2")]
-    partial class mt2
+    [Migration("20221003012158_mt-4")]
+    partial class mt4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,20 +34,48 @@ namespace API_BusinessAdminCJS.Migrations
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Estado")
                         .HasColumnType("bit");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("TipoDocumento");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Descripcion = "Cédula de ciudadanía",
+                            Estado = true,
+                            Nombre = "C.C"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Descripcion = "Tarjeta de identidad",
+                            Estado = true,
+                            Nombre = "T.I"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Descripcion = "Cédula de extranjería",
+                            Estado = true,
+                            Nombre = "C.E"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Descripcion = "Tarjeta de extranjería",
+                            Estado = true,
+                            Nombre = "T.E"
+                        });
                 });
 
             modelBuilder.Entity("API_BusinessAdminCJS.Data.Entities.Usuario", b =>
@@ -64,13 +92,11 @@ namespace API_BusinessAdminCJS.Migrations
 
                     b.Property<string>("Direccion")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Documento")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -87,9 +113,6 @@ namespace API_BusinessAdminCJS.Migrations
 
                     b.Property<int>("IdTipoDocumento")
                         .HasColumnType("int");
-
-                    b.Property<Guid>("ImageId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -116,28 +139,20 @@ namespace API_BusinessAdminCJS.Migrations
 
                     b.Property<string>("PrimerApeliido")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PrimerNombre")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SegundoApellido")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SegundoNombre")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Telefono")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -299,7 +314,7 @@ namespace API_BusinessAdminCJS.Migrations
             modelBuilder.Entity("API_BusinessAdminCJS.Data.Entities.Usuario", b =>
                 {
                     b.HasOne("API_BusinessAdminCJS.Data.Entities.TipoDocumento", "TipoDocumento")
-                        .WithMany("usuarios")
+                        .WithMany("Usuarios")
                         .HasForeignKey("IdTipoDocumento")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -360,7 +375,7 @@ namespace API_BusinessAdminCJS.Migrations
 
             modelBuilder.Entity("API_BusinessAdminCJS.Data.Entities.TipoDocumento", b =>
                 {
-                    b.Navigation("usuarios");
+                    b.Navigation("Usuarios");
                 });
 #pragma warning restore 612, 618
         }
