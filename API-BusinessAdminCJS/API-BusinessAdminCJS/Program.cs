@@ -1,6 +1,10 @@
+using API_BusinessAdminCJS.Configurations;
 using API_BusinessAdminCJS.Data;
 using API_BusinessAdminCJS.Data.Entities;
 using API_BusinessAdminCJS.Helpers;
+using API_BusinessAdminCJS.IRepository;
+using API_BusinessAdminCJS.Repository;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -34,6 +38,8 @@ builder.Services.AddDbContext<DataContext>(o =>
 });
 
 
+builder.Services.AddAuthentication();
+//Extensions
 builder.Services.AddIdentity<Usuario, IdentityRole>(cfg =>
 {
     cfg.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
@@ -52,6 +58,10 @@ builder.Services.AddIdentity<Usuario, IdentityRole>(cfg =>
     .AddEntityFrameworkStores<DataContext>();
 
 builder.Services.AddScoped<IApiService, ApiService>();
+builder.Services.AddAutoMapper(typeof(MapperInitializer));
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling = 
+                                                                Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 var app = builder.Build();
 
@@ -66,6 +76,7 @@ app.UseHttpsRedirection();
 app.UseCors("CorsPolicy");
 app.UseAuthorization();
 
+//app.MapControllerRoute(name:"default",pattern:"{controller=Home}/{action=Index}/{id?}");
 app.MapControllers();
 
 app.Run();
