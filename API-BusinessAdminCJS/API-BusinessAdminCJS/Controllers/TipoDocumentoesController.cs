@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API_BusinessAdminCJS.Data;
 using API_BusinessAdminCJS.Data.Entities;
+using API_BusinessAdminCJS.IRepository;
+using AutoMapper;
+using API_BusinessAdminCJS.ModelsView;
 
 namespace API_BusinessAdminCJS.Controllers
 {
@@ -15,39 +18,62 @@ namespace API_BusinessAdminCJS.Controllers
     public class TipoDocumentoesController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger<TipoDocumentoesController> _logger;
+        private readonly IMapper _mapper;
 
-        public TipoDocumentoesController(DataContext context)
+        public TipoDocumentoesController(IUnitOfWork unitOfWork, ILogger<TipoDocumentoesController> logger,
+            IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
+            _logger = logger;  
+            _mapper = mapper;
         }
 
         // GET: api/TipoDocumentoes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TipoDocumento>>> GetTipoDocumento()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> GetTipoDocumento()
         {
-          if (_context.TipoDocumento == null)
-          {
-              return NotFound();
-          }
-            return await _context.TipoDocumento.ToListAsync();
+            try
+            {
+                var tipoDocumentos = await _unitOfWork.TipoDocumentos.GetAll();
+                var resultas = _mapper.Map<IList<TipoDocumentoDTO>>(tipoDocumentos);
+                return Ok(resultas);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Ocurrio un error al momento de {nameof(GetTipoDocumento)}");
+                return StatusCode(500, "Error interno del servidor, inténtalo de nuevo más tarde.");
+            }         
         }
 
         // GET: api/TipoDocumentoes/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TipoDocumento>> GetTipoDocumento(int id)
+        [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> GetTipoDocumento(int id)
         {
-          if (_context.TipoDocumento == null)
-          {
-              return NotFound();
-          }
-            var tipoDocumento = await _context.TipoDocumento.FindAsync(id);
-
-            if (tipoDocumento == null)
+            try
             {
-                return NotFound();
-            }
+                if (id <= 0)
+                {
+                    throw new Exception($"parametro {id} incorrecto");
+                }
 
-            return tipoDocumento;
+
+                var tipoDocumento = await _unitOfWork.TipoDocumentos.Get(t => t.Id == id/*, new List<string> { nameof(Usuario) }*/);
+                var resultado = _mapper.Map<TipoDocumentoDTO>(tipoDocumento);
+                return Ok(resultado);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Ocurrio un error al momento de {nameof(GetTipoDocumento)}");
+                return StatusCode(500, "Error interno del servidor, inténtalo de nuevo más tarde.");
+            }
         }
 
         // PUT: api/TipoDocumentoes/5
