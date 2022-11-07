@@ -10,6 +10,7 @@ using API_BusinessAdminCJS.Data.Entities;
 using API_BusinessAdminCJS.IRepository;
 using AutoMapper;
 using API_BusinessAdminCJS.ModelsView;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API_BusinessAdminCJS.Controllers
 {
@@ -51,6 +52,7 @@ namespace API_BusinessAdminCJS.Controllers
         }
 
         // GET: api/TipoDocumentoes/5
+        [Authorize]
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

@@ -1,5 +1,6 @@
 ﻿using API_BusinessAdminCJS.Data.Entities;
 using API_BusinessAdminCJS.ModelsView;
+using API_BusinessAdminCJS.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,16 +15,17 @@ namespace API_BusinessAdminCJS.Controllers
         private readonly UserManager<Usuario> _userManager;
         private readonly SignInManager<Usuario> _signInManager;
         private readonly ILogger<AccountController> _logger;
-        private readonly IMapper _mapper;
-        //private readonly IAuthManager _authManager; 
+        private readonly IMapper _mapper;        
+        private readonly IAuthManager _authManager; 
 
 
-        public AccountController(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, ILogger<AccountController> logger, IMapper mapper)
+        public AccountController(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, ILogger<AccountController> logger, IMapper mapper, IAuthManager authManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _mapper = mapper;
+            _authManager = authManager; 
         }
 
         [HttpPost]
@@ -44,7 +46,7 @@ namespace API_BusinessAdminCJS.Controllers
             {
                 var usuario = _mapper.Map<Usuario>(usuarioDTO);
                 usuario.UserName = usuarioDTO.Email;
-                var result = await _userManager.CreateAsync(usuario);
+                var result = await _userManager.CreateAsync(usuario, usuarioDTO.Password);
 
                 if (!result.Succeeded)
                 {
@@ -79,14 +81,14 @@ namespace API_BusinessAdminCJS.Controllers
 
             try
             {
-                var result = await _signInManager.PasswordSignInAsync(loginUserDTO.Email, loginUserDTO.Password, false, false);
+                //var result = await _signInManager.PasswordSignInAsync(loginUserDTO.Email, loginUserDTO.Password, false, false);
 
-                if (!result.Succeeded)
+                if (! await _authManager.ValidateUser(loginUserDTO))
                 {
                     return Unauthorized(loginUserDTO);
                 }
 
-                return Accepted();
+                return Accepted( new {  Token = await _authManager.CreateToken()});
             }
             catch (Exception ex)
             {
